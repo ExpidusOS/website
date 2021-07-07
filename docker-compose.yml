@@ -26,6 +26,8 @@ services:
       DB_PASSWORD: "${DB_PASSWORD:-nginx}"
       EXPIDUS_CLOUD_CLIENT_ID: "${EXPIDUS_CLOUD_CLIENT_ID:-changeme}"
       EXPIDUS_CLOUD_CLIENT_SECRET: "${EXPIDUS_CLOUD_CLIENT_SECRET:-changeme}"
+      OPENCHANNEL_MARKETPLACE_ID: "${OPENCHANNEL_MARKETPLACE_ID:-changeme}"
+      OPENCHANNEL_SECRET: "${OPENCHANNEL_SECRET:-changeme}"
     volumes:
       - "./packages/api:/usr/src/api"
       - "./packages/common:/usr/src/common"

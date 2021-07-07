@@ -13,3 +13,15 @@ export function validateBody(schema: Schema) {
 		}
 	}
 }
+
+export function validateQuery(schema: Schema) {
+	return function notFoundHandler(req: Request, res: Response, next: NextFunction) {
+		const v = validate(req.query, schema)
+
+		if (v.valid) {
+			next()
+		} else {
+			next(new HttpValidationError(v.errors))
+		}
+	}
+}

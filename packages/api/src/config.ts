@@ -11,6 +11,10 @@ const production = env === 'production'
 export default {
 	env,
 	production,
+	openchannel: {
+		marketplaceID: process.env.OPENCHANNEL_MARKETPLACE_ID,
+		secret: process.env.OPENCHANNEL_SECRET
+	},
 	clients: [
 		{
 			id: process.env.EXPIDUS_CLOUD_CLIENT_ID,

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
 import { HttpError, HttpNotFoundError } from '../exceptions'
-import winston from '../../providers/winston'
 import { ValidationError } from 'sequelize'
 
 export function notFoundHandler(req: Request, res: Response, next: NextFunction) {
@@ -8,7 +7,7 @@ export function notFoundHandler(req: Request, res: Response, next: NextFunction)
 }
 
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
-	const response = {
+	const response: Record<string, any> = {
 		status: 500,
 		detail: 'Internal server error'
 	}
@@ -26,7 +25,12 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
 	} else if (err instanceof HttpError) {
 		Object.assign(response, err.toJSON())
 	} else {
-		winston.error(err.stack)
+		response['error_message'] = err.message.toString()
+		response['error_type'] = err.name.toLowerCase()
+	}
+
+	if (process.env.NODE_ENV !== 'production' && err.stack) {
+		response['stack'] = err.stack.toString()
 	}
 
 	res.status(response.status).json(response)

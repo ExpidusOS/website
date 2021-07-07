@@ -1,6 +1,5 @@
 import express from 'express'
-import OAuthServer from 'express-oauth-server'
-import OAuthModel from '../oauth'
+import genPublisherRouter from './routes/publisher'
 import genUserRouter from './routes/user'
 import winston from '../providers/winston'
 import DIContainer from '../providers/di'
@@ -14,10 +13,6 @@ const di = new DIContainer(
 	sequelize
 )
 
-const oauth = new OAuthServer({
-	model: new OAuthModel(di)
-})
-
 app.use((req, res, next) => {
 	winston.debug(`receving request from ${req.protocol}://${req.hostname}${req.originalUrl} (${req.method})`)
 	next()
@@ -25,7 +20,8 @@ app.use((req, res, next) => {
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
-app.use('/v1/user', genUserRouter(di, oauth))
+app.use('/v1/user', genUserRouter(di))
+app.use('/v1/publisher', genPublisherRouter(di))
 app.use(notFoundHandler)
 app.use(errorHandler)
 

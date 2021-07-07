@@ -1,5 +1,4 @@
 import { Sequelize, Model, DataTypes, HasManyGetAssociationsMixin, HasManyAddAssociationMixin, HasManyHasAssociationMixin, HasManyCountAssociationsMixin, HasManyCreateAssociationMixin, Association } from 'sequelize'
-import Publisher from './publisher'
 import AccessToken from './accesstoken'
 import bcrypt from 'bcrypt'
 
@@ -11,13 +10,6 @@ export default class User extends Model {
 	public password!: string
 	public birthdate!: Date
 	public email!: string
-
-	public getPublishers!: HasManyGetAssociationsMixin<Publisher>
-	public addPublisher!: HasManyAddAssociationMixin<Publisher, string>
-	public hasPublisher!: HasManyHasAssociationMixin<Publisher, string>
-	public countPublishers!: HasManyCountAssociationsMixin
-	public createPublisher!: HasManyCreateAssociationMixin<Publisher>
-	public readonly publishers?: Publisher[]
 
 	public getAccessTokens!: HasManyGetAssociationsMixin<AccessToken>
 	public addAccessToken!: HasManyAddAssociationMixin<AccessToken, string>
@@ -75,12 +67,6 @@ export default class User extends Model {
 			sourceKey: 'uuid',
 			foreignKey: 'uuid',
 			as: 'accessToken'
-		})
-
-		User.hasMany(Publisher, {
-			sourceKey: 'uuid',
-			foreignKey: 'owner_uuid',
-			as: 'publishers'
 		})
 		return model
 	}
